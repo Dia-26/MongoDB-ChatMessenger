@@ -23,17 +23,6 @@ The project demonstrates clean **CRUD operations**, RESTful routing, and a respo
 
 ---
 
-## ⚙️ Setup & Run
-
-```bash
-git clone https://github.com/your-username/chat-messenger-mongodb.git
-cd chat-messenger-mongodb
-npm install
-node init.js
-npm start
-
-Visit: http://localhost:8080
-
 🌐 API Routes
 Method	Route	Description
 GET	/	View all chats
@@ -49,5 +38,19 @@ Express routing & middleware
 RESTful architecture
 
 Frontend–backend integration
+
+---
+
+## ⚙️ Setup & Run
+
+```bash
+git clone https://github.com/your-username/chat-messenger-mongodb.git
+cd chat-messenger-mongodb
+npm install
+node init.js
+npm start
+Visit: http://localhost:8080
+
+---
 
 ⭐ Built with ❤️ by Dia Swami
