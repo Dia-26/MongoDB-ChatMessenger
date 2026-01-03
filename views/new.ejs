@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title || 'New Message' %></title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <div class="logo">
+                    <a href="/" class="back-link">
+                        <i class="fas fa-arrow-left"></i>
+                    </a>
+                    <div>
+                        <h1>New Message</h1>
+                        <p class="subtitle">Send a WhatsApp-style message</p>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div class="form-container">
+            <form action="/chats" method="POST" class="chat-form">
+                <div class="form-group">
+                    <label for="from">
+                        <i class="fas fa-user"></i> From
+                    </label>
+                    <input type="text" id="from" name="from" required 
+                           placeholder="Enter sender name" 
+                           value="<%= chat ? chat.from : '' %>">
+                </div>
+
+                <div class="form-group">
+                    <label for="to">
+                        <i class="fas fa-user-friends"></i> To
+                    </label>
+                    <input type="text" id="to" name="to" required 
+                           placeholder="Enter receiver name"
+                           value="<%= chat ? chat.to : '' %>">
+                </div>
+
+                <div class="form-group">
+                    <label for="msg">
+                        <i class="fas fa-comment-dots"></i> Message
+                    </label>
+                    <textarea id="msg" name="msg" required 
+                              placeholder="Type your message here..."
+                              maxlength="500" 
+                              rows="4"><%= chat ? chat.msg : '' %></textarea>
+                    <div class="char-counter">
+                        <span id="charCount">0</span>/500 characters
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <a href="/" class="btn-cancel">
+                        <i class="fas fa-times"></i> Cancel
+                    </a>
+                    <button type="submit" class="btn-submit">
+                        <i class="fas fa-paper-plane"></i> Send Message
+                    </button>
+                </div>
+            </form>
+
+            <!-- Fixed error section - now safe -->
+            <% if (typeof error !== 'undefined' && error) { %>
+                <div class="error-message">
+                    <i class="fas fa-exclamation-circle"></i>
+                    <%= error %>
+                </div>
+            <% } %>
+
+            <!-- Sample Messages -->
+            <div class="sample-messages">
+                <h3><i class="fas fa-lightbulb"></i> Quick Templates</h3>
+                <div class="samples-grid">
+                    <button type="button" class="sample-btn" data-from="You" data-to="Friend" data-msg="Hey, how are you doing today?">
+                        Casual Greeting
+                    </button>
+                    <button type="button" class="sample-btn" data-from="Team" data-to="Group" data-msg="Meeting at 3 PM tomorrow in Conference Room A.">
+                        Meeting Reminder
+                    </button>
+                    <button type="button" class="sample-btn" data-from="Mom" data-to="Family" data-msg="Dinner at 7 PM. Don't forget to bring dessert!">
+                        Family Message
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Character counter
+            const textarea = document.getElementById('msg');
+            const charCount = document.getElementById('charCount');
+            
+            if (textarea && charCount) {
+                textarea.addEventListener('input', function() {
+                    charCount.textContent = this.value.length;
+                    if (this.value.length > 450) {
+                        charCount.style.color = '#ff4757';
+                    } else if (this.value.length > 400) {
+                        charCount.style.color = '#ffa502';
+                    } else {
+                        charCount.style.color = '#2ed573';
+                    }
+                });
+                
+                // Initialize count
+                charCount.textContent = textarea.value.length;
+            }
+
+            // Sample messages
+            document.querySelectorAll('.sample-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    document.getElementById('from').value = this.dataset.from;
+                    document.getElementById('to').value = this.dataset.to;
+                    document.getElementById('msg').value = this.dataset.msg;
+                    
+                    if (textarea) {
+                        textarea.dispatchEvent(new Event('input'));
+                    }
+                    
+                    // Scroll to form
+                    document.querySelector('.chat-form').scrollIntoView({ 
+                        behavior: 'smooth' 
+                    });
+                });
+            });
+
+            // Auto-focus first input
+            if (document.getElementById('from')) {
+                document.getElementById('from').focus();
+            }
+        });
+    </script>
+</body>
+</html>
